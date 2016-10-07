@@ -15,7 +15,7 @@
 		  	firebase.initializeApp(config);
 
 		  	// Test connection
-		  	var chattyRef = firebase.database().ref('chatty2/');
+		  	var chattyRef = firebase.database().ref('chatty/');
 
 		  	var writeMessage = function(message) {
 		  		var list = $('#messages').html();
@@ -59,7 +59,7 @@
 		<input id="sender" placeholder="sender" />
 		<br />
 		<button type="button" id="addButton">Send Message</button>
-		<button type="button" id="clearButton">Reset DB</button>
+		<!-- <button type="button" id="clearButton">Reset DB</button> -->
 		<ul id="messages"></ul>
 	</body>
 </html>
