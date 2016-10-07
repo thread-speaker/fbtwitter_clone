@@ -1,0 +1,65 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/3.4.1/firebase.js"></script>
+
+		<script>
+		  	// Initialize Firebase
+		  	var config = {
+			    apiKey: "AIzaSyBDgHk3_m-vqyUbTGIqgCZ8qAb-CoY5ID4",
+			    authDomain: "luminous-torch-6850.firebaseapp.com",
+			    databaseURL: "https://luminous-torch-6850.firebaseio.com",
+			    storageBucket: "luminous-torch-6850.appspot.com",
+			    messagingSenderId: "825487892602"
+		  	};
+		  	firebase.initializeApp(config);
+
+		  	// Test connection
+		  	var chattyRef = firebase.database().ref('chatty2/');
+
+		  	var writeMessage = function(message) {
+		  		var list = $('#messages').html();
+		  		list += '<li>' + message.message + ' -' + message.sender + '</li>';
+		  		$('#messages').html(list);
+		  	};
+
+		  	var addMessage = function(message) {
+		  		var newPost = chattyRef.push(message);
+		  	};
+
+		  	var clearDB = function() {
+		  		chattyRef.set(null);
+		  		$('#messages').html('');
+		  	};
+
+		  	// Read all the tweets in the DB
+		  	chattyRef.on('child_added', function(data) {
+		  		console.log(data.val());
+		  		writeMessage(data.val());
+		  	});
+
+		  	$('document').ready(function() {
+			  	$('#addButton').click(function() {
+			  		addMessage({
+				  		message: $('#message').val(),
+				  		sender: $('#sender').val(),
+				  		timeStamp: Date.now(),
+				  	});
+			  	});
+
+			  	$('#clearButton').click(function() {
+			  		clearDB();
+			  	});
+		  	});
+		</script>
+
+	</head>
+	<body>
+		<input id="message" placeholder="message" />
+		<input id="sender" placeholder="sender" />
+		<br />
+		<button type="button" id="addButton">Send Message</button>
+		<button type="button" id="clearButton">Reset DB</button>
+		<ul id="messages"></ul>
+	</body>
+</html>
