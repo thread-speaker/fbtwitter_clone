@@ -19,7 +19,7 @@
 
 		  	var writeMessage = function(message) {
 		  		var list = $('#messages').html();
-		  		list += '<li>' + message.message + ' -' + message.sender + '</li>';
+		  		list += '<li><div>Message: ' + message.message + '<br />Sender: ' + message.sender + '</div></li>';
 		  		$('#messages').html(list);
 		  	};
 
