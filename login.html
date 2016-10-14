@@ -17,17 +17,12 @@
         <!-- Code -->
         <script src='app.js'></script>
     </head>
-    <body ng-controller="chattyCtrl">
-        <h1>Firebase Todo</h1>
-        <a href="login.html">Log Out</a>
+    <body ng-controller="loginCtrl">
+        <h1>What is your name?</h1>
 
-        <form ng-submit="addMessage()" ng-hide="isLoading()">
-            <input ng-model="message" placeholder="Message" />
-            <button type="submit">Add Message</button>
+        <form ng-submit="login()">
+            <input ng-model="user" placeholder="Username" />
+            <button type="submit">Log In</button>
         </form>
-
-        <hr />
-
-        <chat messages="messages" parent="foobaz"></chat>
     </body>
 </html>
