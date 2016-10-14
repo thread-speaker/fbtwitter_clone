@@ -11,6 +11,15 @@ app.controller("chattyCtrl", function($scope, $firebaseArray) {
 
   // add new messages to the array
   $scope.addMessage = function() {
+    console.log($scope.message);
+    console.log($scope.sender);
+    if ($scope.message && $scope.sender) {
+      $scope.messages.$add({
+        message: $scope.message,
+        sender: $scope.sender,
+        timeStamp: Date.now(),
+      });
+    }
     /*$scope.messages.$add({
       text: $scope.newMessageText
     });*/
