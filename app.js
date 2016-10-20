@@ -50,6 +50,8 @@ app.directive("chat", function() {
 
   var controller = function($scope, $rootScope) {
     var activeMessage = null;
+	
+	$scope.toShow = 10;
 
     $scope.respondTo = function(id, response) {
       if (response) {
@@ -61,6 +63,25 @@ app.directive("chat", function() {
         });
       }
     };
+	
+	$scope.parseTime = function(message) {
+		if (message && message.timeStamp) {
+			var parse = Date.parse(message.timeStamp);
+			if (parse) {
+				return 0-parse;
+			}
+			else {
+				parse = parseInt(message.timeStamp);
+				if (parse) {
+					return 0-parse;
+				}
+				else return null;
+			}
+		}
+		else {
+			return null;
+		}
+	}
 
     $scope.isResponse = function(message) {
       return (activeMessage && message.inReplyTo == activeMessage);
@@ -83,20 +104,24 @@ app.directive("chat", function() {
     restrict: 'E',
     replace: 'true',
     template: (
-      '<div ng-repeat="message in messages">' +
-        '<div class="messageBlock" ng-class="{isResponse: $parent.isResponse(message)}"' +
-          '  ng-mouseover="$parent.setActive(message)">' +
-          '<div class="messageDeleteButton glyphicon glyphicon-trash" ng-click="messages.$remove(message)"></div>' +
-          '<div class="messageContent">' +
-            '<h3 class="messageSender">{{ message.sender }}</h3>' +
-            '<span class="messageText">{{ message.message }}</span>' +
-            '<form ng-submit="$parent.respondTo(message.$id, response)">' +
-              '<input ng-model="response" placeholder="Message" />' +
-              '<button type="submit">Respond</button>' +
-            '</form>' +
-          '</div>' +
-        '</div>' +
-      '</div>'
+	  '<div>' +
+		  'How many recent message would you like to see? <input type="number" ng-model="toShow" min="0" max="100" ng-min="0" ng-max="100" />' +
+		  '<hr />' +
+		  '<div ng-repeat="message in messages | orderBy:\'-timeStamp\' | limitTo:toShow">' +
+			'<div class="messageBlock" ng-class="{isResponse: $parent.isResponse(message)}"' +
+			  '  ng-mouseover="$parent.setActive(message)">' +
+			  '<div class="messageDeleteButton glyphicon glyphicon-trash" ng-click="messages.$remove(message)"></div>' +
+			  '<div class="messageContent">' +
+				'<h3 class="messageSender">{{ message.sender }}</h3>' +
+				'<span class="messageText">{{ message.message }}</span>' +
+				'<form ng-submit="$parent.respondTo(message.$id, response)">' +
+				  '<input ng-model="response" placeholder="Message" />' +
+				  '<button type="submit">Respond</button>' +
+				'</form>' +
+			  '</div>' +
+			'</div>' +
+		  '</div>' +
+		'</div>'
     ),
     link: link,
     controller: controller,
