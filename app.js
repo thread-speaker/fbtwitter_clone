@@ -9,7 +9,7 @@ app.controller("loginCtrl", function($scope, $window) {
 
   $scope.login = function() {
     localStorage.user = $scope.user;
-    $window.location.href = 'index2.html';
+    $window.location.href = 'index.html';
   };
 });
 
